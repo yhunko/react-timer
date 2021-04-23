@@ -1,4 +1,11 @@
-import React, { useState, createRef, useRef, useEffect } from 'react'
+import React, {
+  useState,
+  createRef,
+  useRef,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from 'react'
 
 import './index.css'
 
@@ -23,7 +30,7 @@ function Timer() {
   const [initialCount, setInitialCount] = useState(0)
   const [isPaused, setPaused] = useState(false)
   const [isEnded, setEnded] = useState(false)
-  const [notifPermission, setNotifPermission] = useState('')
+  const [notifPermission, setNotifPermission] = useState('default')
 
   const timer = useRef(0)
 
@@ -74,7 +81,7 @@ function Timer() {
 
   function TimeInputs() {
     return (
-      <div className="flex flex-col justify-center gap-2 m-2">
+      <div className="flex flex-col justify-center gap-2 mt-2">
         <div className="flex flex-row items-center justify-center gap-2">
           <label htmlFor="minutesInput">Minutes:</label>
           <input
@@ -168,17 +175,36 @@ function Timer() {
     )
   }
 
-  useEffect(() => {
+  function enableNotifications() {
     Notification.requestPermission().then((permission) => {
       setNotifPermission(permission)
     })
+  }
+
+  function NotifPermissionBtn() {
+    return (
+      notifPermission === 'granted' || (
+        <button
+          className="success"
+          onClick={enableNotifications}
+          disabled={notifPermission === 'denied'}
+        >
+          Enable notifications
+        </button>
+      )
+    )
+  }
+
+  useEffect(() => {
+    setNotifPermission(Notification.permission)
   })
 
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-col justify-center items-center">
       {count === 0 && !isEnded && TimeInputs()}
       {isEnded && TimerEnded()}
       {count > 0 && TimerCharts()}
+      <div className="mt-2">{NotifPermissionBtn()}</div>
     </div>
   )
 }
