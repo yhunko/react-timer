@@ -29,7 +29,7 @@ function Chart({ percent, color, count, text }: Chart) {
       viewBox="0 0 36 36"
       className="block"
       style={{
-        minWidth: '250px',
+        maxWidth: '250px',
       }}
     >
       <path
