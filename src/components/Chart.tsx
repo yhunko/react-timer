@@ -1,5 +1,7 @@
 import React from 'react'
 
+import '../styles/Chart.css'
+
 type Chart = {
   percent: number
   color: string
@@ -22,7 +24,7 @@ export default function ({ percent, color, count, text }: Chart) {
         stroke={color}
         d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
       />
-      <text x="50%" y="50%" textAnchor="middle" className="small">
+      <text x="50%" y="50%" textAnchor="middle" className="font-small">
         <tspan x="50%" y="43%">
           {count}
         </tspan>
