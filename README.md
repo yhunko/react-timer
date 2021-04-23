@@ -2,6 +2,8 @@
 
 Simple timer application written in React. Used as a practice.
 
+![Preview GIF](.github/assets/preview.gif)
+
 ## Tech stack
 
 - [WindiCSS](https://windicss.org/)
