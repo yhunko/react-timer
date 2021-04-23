@@ -2,6 +2,8 @@ import React, { useState, createRef, useRef, useEffect } from 'react'
 
 import './index.css'
 
+import Chart from './components/Chart'
+
 const TIMER_ENDED_TIMEOUT = 3000
 const DEFAULT_MINUTES = 1
 const DEFAULT_SECONDS = 15
@@ -9,45 +11,11 @@ const DEFAULT_SECONDS = 15
 const minutesInput = createRef<HTMLInputElement>()
 const secondsInput = createRef<HTMLInputElement>()
 
-type Chart = {
-  percent: number
-  color: string
-  count: number
-  text: string
-}
-
 function getTime(initSeconds: number): { minutes: number; seconds: number } {
   const minutes = Math.floor(initSeconds / 60)
   const seconds = initSeconds - minutes * 60
 
   return { minutes, seconds }
-}
-
-function Chart({ percent, color, count, text }: Chart) {
-  return (
-    <svg
-      viewBox="0 0 36 36"
-      className="block"
-      style={{
-        maxWidth: '250px',
-      }}
-    >
-      <path
-        className="circle"
-        strokeDasharray={percent + ', 100'}
-        stroke={color}
-        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-      />
-      <text x="50%" y="50%" textAnchor="middle" className="small">
-        <tspan x="50%" y="43%">
-          {count}
-        </tspan>
-        <tspan x="50%" y="57%">
-          {text}
-        </tspan>
-      </text>
-    </svg>
-  )
 }
 
 function Timer() {
