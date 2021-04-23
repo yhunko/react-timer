@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  createRef,
-  useRef,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-} from 'react'
+import React, { useState, createRef, useRef, useEffect } from 'react'
 
 import './index.css'
 
