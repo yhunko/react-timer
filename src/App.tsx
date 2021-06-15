@@ -1,4 +1,18 @@
 import React, { useState, createRef, useRef, useEffect } from 'react'
+import { withStyles } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import Box from '@material-ui/core/Box'
+// import Snackbar from '@material-ui/core/Snackbar'
+import type { Theme } from '@material-ui/core'
+
+import PauseIcon from '@material-ui/icons/Pause'
+import PlayIcon from '@material-ui/icons/PlayArrow'
+import ClearIcon from '@material-ui/icons/Clear'
+
+import RED from '@material-ui/core/colors/red'
+import AMBER from '@material-ui/core/colors/amber'
+import GREEN from '@material-ui/core/colors/green'
 
 import './index.css'
 
@@ -7,6 +21,31 @@ import Chart from './components/Chart'
 const TIMER_ENDED_TIMEOUT = 3000
 const DEFAULT_MINUTES = 1
 const DEFAULT_SECONDS = 15
+
+const DangerButton = withStyles((theme: Theme) => ({
+  root: {
+    backgroundColor: RED[500],
+    '&:hover': {
+      backgroundColor: RED[600],
+    },
+  },
+}))(Button)
+const WarningButton = withStyles(() => ({
+  root: {
+    backgroundColor: AMBER[500],
+    '&:hover': {
+      backgroundColor: AMBER[600],
+    },
+  },
+}))(Button)
+const SuccessButton = withStyles(() => ({
+  root: {
+    backgroundColor: GREEN[500],
+    '&:hover': {
+      backgroundColor: GREEN[600],
+    },
+  },
+}))(Button)
 
 const minutesInput = createRef<HTMLInputElement>()
 const secondsInput = createRef<HTMLInputElement>()
@@ -74,8 +113,21 @@ function Timer() {
 
   function TimeInputs() {
     return (
-      <div className="flex flex-col justify-center gap-2 mt-2">
-        <div className="flex flex-row items-center justify-center gap-2">
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        gridGap={2}
+        m={2}
+        p={2}
+      >
+        <TextField
+          inputRef={minutesInput}
+          type="number"
+          label="Minutes"
+          defaultValue={DEFAULT_MINUTES}
+        />
+        {/* <div className="flex flex-row items-center justify-center gap-2">
           <label htmlFor="minutesInput">Minutes:</label>
           <input
             id="minutesInput"
@@ -87,8 +139,14 @@ function Timer() {
             pattern="[0-59]"
             maxLength={2}
           />
-        </div>
-        <div className="flex flex-row items-center justify-center gap-2">
+        </div> */}
+        <TextField
+          inputRef={secondsInput}
+          type="number"
+          label="Seconds"
+          defaultValue={DEFAULT_SECONDS}
+        />
+        {/* <div className="flex flex-row items-center justify-center gap-2">
           <label htmlFor="secondsInput">Seconds:</label>
           <input
             id="secondsInput"
@@ -101,24 +159,28 @@ function Timer() {
             maxLength={2}
             required
           />
-        </div>
+        </div> */}
 
-        <button
-          className="primary"
-          onClick={() => {
-            const minutes = Number(minutesInput?.current?.value) || 0
-            const seconds = Number(secondsInput?.current?.value) || 0
-            const time = minutes * 60 + seconds
+        <Box mt={2} minWidth="150px">
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ minWidth: '100%' }}
+            onClick={() => {
+              const minutes = Number(minutesInput?.current?.value) || 0
+              const seconds = Number(secondsInput?.current?.value) || 0
+              const time = minutes * 60 + seconds
 
-            setCount(time)
-            setInitialCount(time)
+              setCount(time)
+              setInitialCount(time)
 
-            startTimer()
-          }}
-        >
-          Start
-        </button>
-      </div>
+              startTimer()
+            }}
+          >
+            Start
+          </Button>
+        </Box>
+      </Box>
     )
   }
 
@@ -126,8 +188,8 @@ function Timer() {
     const { minutes, seconds } = getTime(count)
 
     return (
-      <div className="flex flex-col justify-around">
-        <div className="flex flex-row">
+      <Box display="flex" flexDirection="column" justifyContent="space-around">
+        <Box display="flex" flexDirection="row">
           <Chart
             percent={(count / 60 / (initialCount / 60)) * 100}
             color="red"
@@ -140,31 +202,49 @@ function Timer() {
             count={seconds}
             text={`second${seconds > 1 ? 's' : ''}`}
           />
-        </div>
+        </Box>
 
-        <div className="flex flex-row justify-center gap-5 mt-5">
+        <Box
+          display="flex"
+          flexDirection="row"
+          justifyContent="center"
+          gridGap={5}
+          mt={5}
+        >
           {isPaused ? (
-            <button className="success" onClick={startTimer}>
+            <SuccessButton
+              variant="contained"
+              startIcon={<PlayIcon />}
+              onClick={startTimer}
+            >
               Resume
-            </button>
+            </SuccessButton>
           ) : (
-            <button className="warning" onClick={stopTimer}>
+            <WarningButton
+              variant="contained"
+              startIcon={<PauseIcon />}
+              onClick={stopTimer}
+            >
               Pause
-            </button>
+            </WarningButton>
           )}
-          <button className="danger" onClick={clearTimer}>
+          <DangerButton
+            variant="contained"
+            startIcon={<ClearIcon />}
+            onClick={clearTimer}
+          >
             Clear
-          </button>
-        </div>
-      </div>
+          </DangerButton>
+        </Box>
+      </Box>
     )
   }
 
   function TimerEnded() {
     return (
-      <div className="my-10 mx-5">
+      <Box my={10} mx={5}>
         <h1 className="text-4xl font-bold">Timer ended</h1>
-      </div>
+      </Box>
     )
   }
 
@@ -177,13 +257,14 @@ function Timer() {
   function NotifPermissionBtn() {
     return (
       notifPermission === 'granted' || (
-        <button
-          className="success"
+        <Button
+          variant="contained"
+          color="primary"
           onClick={enableNotifications}
           disabled={notifPermission === 'denied'}
         >
           Enable notifications
-        </button>
+        </Button>
       )
     )
   }
@@ -193,12 +274,17 @@ function Timer() {
   })
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
       {count === 0 && !isEnded && TimeInputs()}
       {isEnded && TimerEnded()}
       {count > 0 && TimerCharts()}
       <div className="mt-2">{NotifPermissionBtn()}</div>
-    </div>
+    </Box>
   )
 }
 
