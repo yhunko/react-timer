@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
-// import Snackbar from '@material-ui/core/Snackbar'
+import Snackbar from '@material-ui/core/Snackbar'
 import type { Theme } from '@material-ui/core'
 
 import PauseIcon from '@material-ui/icons/Pause'
@@ -127,39 +127,12 @@ function Timer() {
           label="Minutes"
           defaultValue={DEFAULT_MINUTES}
         />
-        {/* <div className="flex flex-row items-center justify-center gap-2">
-          <label htmlFor="minutesInput">Minutes:</label>
-          <input
-            id="minutesInput"
-            defaultValue={DEFAULT_MINUTES}
-            ref={minutesInput}
-            type="number"
-            min="0"
-            max="59"
-            pattern="[0-59]"
-            maxLength={2}
-          />
-        </div> */}
         <TextField
           inputRef={secondsInput}
           type="number"
           label="Seconds"
           defaultValue={DEFAULT_SECONDS}
         />
-        {/* <div className="flex flex-row items-center justify-center gap-2">
-          <label htmlFor="secondsInput">Seconds:</label>
-          <input
-            id="secondsInput"
-            defaultValue={DEFAULT_SECONDS}
-            ref={secondsInput}
-            type="number"
-            min="1"
-            max="59"
-            pattern="[1-59]"
-            maxLength={2}
-            required
-          />
-        </div> */}
 
         <Box mt={2} minWidth="150px">
           <Button
@@ -240,14 +213,6 @@ function Timer() {
     )
   }
 
-  function TimerEnded() {
-    return (
-      <Box my={10} mx={5}>
-        <h1 className="text-4xl font-bold">Timer ended</h1>
-      </Box>
-    )
-  }
-
   function enableNotifications() {
     Notification.requestPermission().then((permission) => {
       setNotifPermission(permission)
@@ -280,10 +245,17 @@ function Timer() {
       justifyContent="center"
       alignItems="center"
     >
-      {count === 0 && !isEnded && TimeInputs()}
-      {isEnded && TimerEnded()}
+      {count === 0 && TimeInputs()}
       {count > 0 && TimerCharts()}
       <div className="mt-2">{NotifPermissionBtn()}</div>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        open={isEnded}
+        message="Timer has ended"
+      />
     </Box>
   )
 }
