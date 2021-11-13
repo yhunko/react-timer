@@ -6,7 +6,7 @@ Simple timer application written in React. Used as a practice.
 
 ## Tech stack
 
-- [WindiCSS](https://windicss.org/)
+- [Material UI v4](https://v4.mui.com/)
 - [Vite](https://vitejs.dev/)
 - TypeScript
 
