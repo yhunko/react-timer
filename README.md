@@ -6,7 +6,7 @@ Simple timer application written in React. Used as a practice.
 
 ## Tech stack
 
-- [Material UI v4](https://v4.mui.com/)
+- [Material UI v5](https://mui.com/)
 - [Vite](https://vitejs.dev/)
 - TypeScript
 
