@@ -1,5 +1,5 @@
 import React from "react";
-import { useInterval } from "react-use";
+import useInterval from "react-use/lib/useInterval";
 import { FormattedValue } from "./types";
 
 export type TimerHookType = {
