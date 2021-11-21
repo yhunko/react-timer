@@ -1,7 +1,25 @@
 import React from "react";
 import { useInterval } from "react-use";
+import { FormattedValue } from "./types";
 
-const useTimer = () => {
+export type TimerHookType = {
+  value: number;
+  initialValue: number;
+  start: (time: number) => void;
+  pause: () => void;
+  resume: () => void;
+  clear: () => void;
+  isPaused: boolean;
+  isEnded: boolean;
+  isCleared: boolean;
+  getFormattedValue: () => {
+    days: FormattedValue;
+    hours: FormattedValue;
+    minutes: FormattedValue;
+    seconds: FormattedValue;
+  };
+};
+const useTimer = (): TimerHookType => {
   const [value, setValue] = React.useState(0);
   const [initialValue, setInitialValue] = React.useState(0);
 
@@ -26,6 +44,26 @@ const useTimer = () => {
     isEnded,
     isPaused,
     isCleared,
+    getFormattedValue: () => {
+      let seconds = value;
+
+      const days = Math.floor(seconds / (3600 * 24));
+      seconds -= days * 3600 * 24;
+      const hours = Math.floor(seconds / 3600);
+      seconds -= hours * 3600;
+      const minutes = Math.floor(seconds / 60);
+      seconds -= minutes * 60;
+
+      return {
+        days: {
+          value: days,
+          percent: ((days * 3600 * 24) / (3600 * 24 * 60)) * 100,
+        },
+        hours: { value: hours, percent: ((hours * 60) / 3600) * 100 },
+        minutes: { value: minutes, percent: ((minutes * 60) / 3600) * 100 },
+        seconds: { value: seconds, percent: (seconds / 60) * 100 },
+      };
+    },
     start(time: number) {
       setValue(time);
       setInitialValue(time);
@@ -42,6 +80,8 @@ const useTimer = () => {
       setValue(0);
       setInitialValue(0);
       setIsCleared(true);
+      setIsEnded(false);
+      setIsPaused(false);
     },
   };
 };
